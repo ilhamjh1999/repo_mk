@@ -1,0 +1,83 @@
+<openerp>
+  <data>
+
+    <!-- FORM PROJECT -->
+    <record id="view_project_planned_inherit_form" model="ir.ui.view">
+      <field name="name">project.planned.form.view.inherit</field>
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.edit_project"></field>
+      <field name="arch" type="xml">
+        <field name="user_id" position="after">
+          <field name="total_planned"/>
+          <field name="total_efective"/>
+        </field>
+      </field>
+    </record>
+
+    <!-- FORM TASK-->
+    <record id="view_task_inherit_form" model="ir.ui.view">
+      <field name="name">task.form.view.inherit</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_form2"></field>
+      <field name="arch" type="xml">
+        <xpath expr="//notebook/page[@name='description_page']" position="after">
+          <page string="Progress" attrs="{'invisible': [('project_id', '=', False)]}" name="progress">
+            <field name="progres_ids">
+              <tree editable="bottom" string="Progress" default_order="date">
+                <field name="date"/>
+                <field name="progres" sum="Actual"/>
+              </tree>
+            </field>
+            <group class="oe_subtotal_footer oe_right" colspan="2" name="progres_total">
+              <field name="total_actual" string="Last Progress" widget="progressbar" />
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+
+
+     TASK TREE
+    <record id="view_task_inherit_tree" model="ir.ui.view">
+      <field name="name">task.tree.view.inherit</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_tree2"></field>
+      <field name="arch" type="xml">
+        <field name="remaining_hours" position="after">
+          <field name="total_actual" string="Last Actual Progress" widget="progressbar" />
+        </field>
+      </field>
+    </record>
+
+     TASK TREE
+    <record id="view_task_tree_inherit" model="ir.ui.view">
+      <field name="name">task.tree.inherit.view</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="hr_timesheet.view_task_tree2_inherited"></field>
+      <field name="arch" type="xml">
+        <field name="progress" position="replace">
+        </field>
+      </field>
+    </record>
+
+
+    <!-- KANBAN inherit -->
+    <record id="fits_view_task_kanban_inherit_project" model="ir.ui.view">
+      <field name="name">project.task.view.kanban.inherit</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_kanban"/>
+      <field name="arch" type="xml">
+
+        <xpath expr="//field[@name='name']" position="after">
+
+          <field name="total_actual" widget="progressbar" />
+
+        </xpath>
+
+
+      </field>
+    </record>
+
+  </data>
+</openerp>

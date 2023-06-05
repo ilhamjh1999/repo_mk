@@ -1,0 +1,90 @@
+<odoo>
+  <data>
+
+     <record id="view_galery_form" model="ir.ui.view">
+            <field name="name">photo.galery.form</field>
+            <field name="model">photo.galery</field>
+            <field name="arch" type="xml">
+                <form string="Galery Photo">
+                <sheet>
+                	<group>
+                    <field name="name" default_focus="1" style="width: 30%%"/>
+        			<field name="image" widget='image' height="200" width="320"  />
+        			<field name="descrip"/>
+        			<field name="picture_date"/>
+        			<field name="project_id" />
+        			<field name="task_id" domain="[('project_id', '=', project_id)]"/>
+        			
+        			</group>    
+                </sheet>
+        		</form>
+                
+            </field>
+        </record>
+        
+       <record id="view_galery_tree" model="ir.ui.view">
+            <field name="name">photo.galery.tree</field>
+            <field name="model">photo.galery</field>
+            <field name="arch" type="xml">
+                <tree string="Galery Photo">
+	                <field name="name"/>
+	                <field name="descrip"/>
+        			<field name="picture_date"/>
+        			<field name="project_id"/>
+        			<field name="task_id" />        
+                </tree>
+            </field>
+        </record>
+        
+  
+        
+      <record id="photo_kanban_view" model="ir.ui.view">
+            <field name="name">Photo</field>
+            <field name="model">photo.galery</field>
+            <field name="arch" type="xml">
+		        <kanban>
+		        	<field name="id"/>
+		            <templates>
+		                <t t-name="kanban-box">
+		                    <div class="oe_resource_vignette">
+		                        <div class="oe_resource_image">
+		                            <a type="edit"><img alt="" t-att-src="kanban_image('photo.galery', 'image', record.id.raw_value)" class="oe_resource_picture" height="175" width="296"/></a>
+		                        </div>
+		                        <div class="oe_resource_details">
+		                        	<strong><field name="name"/></strong>
+		                            <ul>
+		                               <li>Date :<field name="picture_date"/></li>
+		                               <li>Description :<field name="descrip"/></li>
+		                                                                
+		                             </ul>
+		                        </div>
+		                    </div>                       
+		                </t>
+		            </templates>
+		        </kanban>
+		    </field>
+	</record>
+        
+    
+        
+        <record model="ir.actions.act_window" id="action_galery">
+	    	<field name="name">Photo Galery</field>
+	    	<field name="res_model">photo.galery</field>
+	    	<field name="view_type">form</field>
+	    	<field name="view_mode">kanban,tree,form</field>
+		</record>
+		
+		
+       <menuitem id="menu_project_galery_report"
+            name="Photo Galeries"
+            action="action_galery"
+            parent="menu_management_construction"
+            sequence="2"/> 	 	
+		
+		
+
+					
+  </data>
+</odoo>
+
+

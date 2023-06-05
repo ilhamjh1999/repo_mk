@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <!--
+    <record model="ir.ui.view" id="fits_extend_mk.list">
+      <field name="name">fits_extend_mk list</field>
+      <field name="model">fits_extend_mk.fits_extend_mk</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+    -->
+
+    <!-- actions opening views on models -->
+    <!--
+    <record model="ir.actions.act_window" id="fits_extend_mk.action_window">
+      <field name="name">fits_extend_mk window</field>
+      <field name="res_model">fits_extend_mk.fits_extend_mk</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    -->
+
+    <!-- server action to the one above -->
+    <!--
+    <record model="ir.actions.server" id="fits_extend_mk.action_server">
+      <field name="name">fits_extend_mk server</field>
+      <field name="model_id" ref="model_fits_extend_mk_fits_extend_mk"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": self._name,
+        }
+      </field>
+    </record>
+    -->
+
+    <!-- Top menu item -->
+    <!--
+    <menuitem name="fits_extend_mk" id="fits_extend_mk.menu_root"/>
+    -->
+    <!-- menu categories -->
+    <!--
+    <menuitem name="Menu 1" id="fits_extend_mk.menu_1" parent="fits_extend_mk.menu_root"/>
+    <menuitem name="Menu 2" id="fits_extend_mk.menu_2" parent="fits_extend_mk.menu_root"/>
+    -->
+    <!-- actions -->
+    <!--
+    <menuitem name="List" id="fits_extend_mk.menu_1_list" parent="fits_extend_mk.menu_1"
+              action="fits_extend_mk.action_window"/>
+    <menuitem name="Server to list" id="fits_extend_mk" parent="fits_extend_mk.menu_2"
+              action="fits_extend_mk.action_server"/>
+    -->
+  </data>
+</odoo>

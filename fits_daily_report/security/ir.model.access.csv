@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_daily,project.daily,model_project_daily,,1,1,1,1
+access_photo_galery,photo.galery,model_photo_galery,,1,1,1,1
+access_project_galery,project.galery,model_project_galery,,1,1,1,1
+access_pekerjaan_activity,pekerjaan.activity,model_pekerjaan_activity,,1,1,1,1
+access_pemakaian_peralatan,pemakaian.peralatan,model_pemakaian_peralatan,,1,1,1,1
+access_bahan_konstruksi,bahan.konstruksi,model_bahan_konstruksi,,1,1,1,1
+access_personil_pelaksanaan,personil.pelaksanaan,model_personil_pelaksanaan,,1,1,1,1
+access_personil_pelaksanaan_tma,personil.pelaksanaan.tma,model_personil_pelaksanaan_tma,,1,1,1,1
+access_penghambat_pekerjaan,penghambat.pekerjaan,model_penghambat_pekerjaan,,1,1,1,1
+access_lampiran_dokumen,lampiran.dokumen,model_lampiran_dokumen,,1,1,1,1
+access_project_designation,project.designation,model_project_designation,,1,1,1,1
+access_laporan,laporan,model_laporan,,1,1,1,1

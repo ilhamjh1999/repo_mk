@@ -1,0 +1,824 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp> 
+    <data>
+        
+       <report id="project_photo_const_qweb_report"
+                string="Daily Report"
+                model="project.daily"
+                report_type = "qweb-pdf"
+                file="fits_daily_report.report_daily_qweb"
+                name="fits_daily_report.report_daily_qweb"/>
+
+
+        
+
+      <template id="report_daily_qweb">
+		   <style type="text/css" >
+			@media print {
+                p.pageBreak {
+			   				  page-break-after: always;
+			   				}
+            }
+		   </style>
+		    <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+
+                     <t t-call="web.external_layout">
+                 <div class="page">
+
+                    <!--Daily Construction Report-->
+                   <div style="page-break-inside: avoid;">
+                    <h3 class="text-center">
+                        <span t-field="o.name"/>
+                    </h3>
+                    <br/>
+
+
+                  <table width="100%">
+                 	<td class="text-left">
+                    <table>
+						<tr><td>No. Urut</td><td> : </td><td><span t-field="o.no_urut"/></td></tr>
+                        <tr><td>Hari/Tanggal</td><td> : </td><td><span t-field="o.date_daily"/></td></tr>
+						<tr><td>Proyek</td><td> : </td><td><span t-field="o.project_id.name"/></td></tr>
+						<tr><td>Penyedia Jasa</td><td> : </td><td><span t-field="o.partner_id.name"/></td></tr>
+						<tr><td>Konsultan Pengawas</td><td> : </td><td><span t-field="o.company_id.name"/></td></tr>
+                        <tr><td>Kontrak No. Tanggal</td><td> : </td><td><span t-field="o.kontrak_no_tgl"/></td></tr>
+						<tr><td>SMPK No./Tanggal</td><td> : </td><td><span t-field="o.smpk_no_tgl"/></td></tr>
+                    </table>
+                    </td>
+<!--                    <td class="text-left">-->
+<!--                    <table>-->
+<!--                    	<tr><td>Hari/Tanggal</td><td> : </td><td><span t-field="o.date_daily"/></td></tr>-->
+<!--                        <tr><td style="width:35%;">Project Manager</td><td style="width:5%;"> :</td><td style="width:50%;"><span t-field="o.project_id.user_id.name"/></td></tr>-->
+<!--                    	<tr><td style="width:35%;">Prepared by</td><td style="width:5%;"> :</td><td style="width:50%;"><span t-field="o.write_uid.name"/></td></tr>-->
+<!--                    	<tr><td>Lokasi</td><td> : </td><td><span t-field="o.location"/></td></tr>-->
+<!--                        <tr><td>Jam Kerja</td><td> : </td><td><span t-esc="'%02d:%02d' % (int(o.start), o.start % 1 * 60)"/>&#160;-&#160;-->
+<!--                       	<span t-esc="'%02d:%02d' % (int(o.end), o.end % 1 * 60)"/></td></tr>-->
+<!--					</table>-->
+<!--                    </td>-->
+                 </table>
+                 <br/>
+                 <br/>
+
+
+               <table width="100%">
+				   <div style="page-break-inside: avoid;">
+<!--				<div style="font-weight: bold;">A.PEKERJAAN</div>-->
+                <table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+							<th colspan="5" class="text-center" style="width:100%; border: solid 1px #000;">A.PEKERJAAN</th>
+							<tr>
+								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>
+								<th class="text-center" style="width:45%; border: solid 1px #000;">Jenis Pekerjaan</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Bobot Rencana</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Bobot Aktual</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Total Progres (%)</th>
+							</tr>
+					   </thead>
+					   <tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t t-foreach="o.pekerjaan_ids" t-as="l">
+									<tr>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-esc="l_index + 1"/>
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<span t-field="l.task_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.plan"/>&#160;%
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.actual"/>&#160;%
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.total_progress"/>&#160;%
+										</td>
+									</tr>
+								</t>
+						</tbody>
+                  		<tr t-if="len(o.pekerjaan_ids)== 0" >
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+						</tr>
+								<tr class="text-right">
+                                    <td colspan="4" class="text-center" style="border: solid 1px #000;">
+                                        <strong>Progres Aktual </strong>
+										<td class="text-center" style="border: solid 1px #000; font-weight: bold;">
+											<span t-field="o.total_progress_aktual"></span>&#160;%<br/>
+										</td>
+								    </td>
+                                </tr>
+								<tr class="text-right">
+                                    <td colspan="4" class="text-center" style="border: solid 1px #000;">
+                                        <strong>Progres Rencana </strong>
+										<td class="text-center" style="border: solid 1px #000; font-weight: bold;">
+											<span t-field="o.total_progress_rencana"></span>&#160;%<br/>
+										</td>
+                                    </td>
+                                </tr>
+								<tr class="text-right">
+                                    <td colspan="4" class="text-center" style="border: solid 1px #000;">
+                                        <strong>Deviasi</strong>
+										<td class="text-center" style="border: solid 1px #000; font-weight: bold;">
+											<span t-field="o.total_deviasi"></span>&#160;%<br/>
+										</td>
+                                    </td>
+                                </tr>
+					</table>
+					</div>
+				   <div style="page-break-inside: avoid;">
+<!--				<div style="font-weight: bold;">B.TIBA/MUTASI: BAHAN KONSTRUKSI POKOK</div>-->
+                <table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+								<th colspan="6" class="text-center" style="width:100%; border: solid 1px #000;">B.TIBA/MUTASI: BAHAN KONSTRUKSI POKOK</th>
+							<tr>
+								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>
+								<th class="text-center" style="width:45%; border: solid 1px #000;">Jenis</th>
+								<th class="text-center" style="width:10%; border: solid 1px #000;">Cecah/Vol</th>
+								<th class="text-center" style="width:10%; border: solid 1px #000;">Satuan</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Lokasi Asal</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Lokasi Tujuan</th>
+							</tr>
+					   </thead>
+					   <tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t t-foreach="o.bahan_konstruksi_ids" t-as="l">
+									<tr>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-esc="l_index + 1"/>
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<span t-field="l.product_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.vol"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.product_uom.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.lokasi_asal"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.lokasi_tujuan"/>
+										</td>
+									</tr>
+								</t>
+						</tbody>
+                  		<tr t-if="len(o.bahan_konstruksi_ids)== 0" >
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+						</tr>
+					</table>
+					</div>
+				   <div style="page-break-inside: avoid;">
+<!--				<div style="font-weight: bold;">C.PEMAKAIAN PERALATAN</div>-->
+                <table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+							<th colspan="4" class="text-center" style="width:100%; border: solid 1px #000;">C.PEMAKAIAN PERALATAN</th>
+							<tr>
+								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>
+								<th class="text-center" style="width:45%; border: solid 1px #000;">Jenis Peralatan</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Jumlah</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Lokasi</th>
+							</tr>
+					   </thead>
+					   <tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t t-foreach="o.pemakaian_peralatan_ids" t-as="l">
+									<tr>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-esc="l_index + 1"/>
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<span t-field="l.product_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.qty"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.lokasi"/>
+										</td>
+									</tr>
+								</t>
+						</tbody>
+                  		<tr t-if="len(o.pemakaian_peralatan_ids)== 0" >
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+						</tr>
+					</table>
+					</div>
+				<div style="page-break-inside: avoid;">
+<!--				<div style="font-weight: bold;">D.PERSONIL PELAKSANAAN LAPANGAN <span t-field="o.personil_pelaksana_1"/></div>-->
+                <table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+							<th colspan="5" class="text-center" style="width:100%; border: solid 1px #000;">D.PERSONIL PELAKSANAAN LAPANGAN <span t-field="o.personil_pelaksana_1"/></th>
+							<tr>
+								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>
+								<th class="text-center" style="width:45%; border: solid 1px #000;">Tugas/Jabatan</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Nama</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Jumlah</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Lokasi</th>
+							</tr>
+					   </thead>
+					   <tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t t-foreach="o.personil_pelaksanaan_ids" t-as="l">
+									<tr>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-esc="l_index + 1"/>
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<span t-field="l.designation_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.partner_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.person"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.lokasi"/>
+										</td>
+									</tr>
+								</t>
+
+
+					   </tbody>
+
+
+                  		<tr t-if="len(o.personil_pelaksanaan_ids)== 0" >
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+						</tr>
+								<tr class="text-right">
+                                    <td colspan="4" class="text-right" style="border: solid 1px #000;">
+                                        <strong>Total Orang</strong>
+										<td class="text-center" style="border: solid 1px #000; font-weight: bold;">
+										<span t-field="o.total_person"/>
+										</td>
+                                    </td>
+                                </tr>
+
+					</table>
+					</div>
+				    <div style="page-break-inside: avoid;">
+<!--				<div style="font-weight: bold;">E.PERSONIL PELAKSANAAN LAPANGAN <span t-field="o.personil_pelaksana_2"/></div>-->
+                <table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+							<th colspan="5" class="text-center" style="width:100%; border: solid 1px #000;">E.PERSONIL PELAKSANAAN LAPANGAN <span t-field="o.personil_pelaksana_2"/></th>
+							<tr>
+								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>
+								<th class="text-center" style="width:45%; border: solid 1px #000;">Tugas/Jabatan</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Nama</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Jumlah</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Lokasi</th>
+							</tr>
+					   </thead>
+					   <tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t t-foreach="o.personil_pelaksanaan_tma_ids" t-as="l">
+									<tr>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-esc="l_index + 1"/>
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<span t-field="l.designation_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.partner_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.person"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.lokasi"/>
+										</td>
+									</tr>
+								</t>
+						</tbody>
+                  		<tr t-if="len(o.personil_pelaksanaan_tma_ids)== 0" >
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+						</tr>
+						<tr class="text-right">
+                                    <td colspan="4" class="text-right" style="border: solid 1px #000;">
+                                        <strong>Total Orang</strong>
+										<td class="text-center" style="border: solid 1px #000; font-weight: bold;">
+										<span t-field="o.total_person_tma"/>
+										</td>
+                                    </td>
+                        </tr>
+					</table>
+					</div>
+				   <div style="page-break-inside: avoid;">
+<!--				<div style="font-weight: bold;">F.CUACA/BENCANA ALAM/KEJADIAN PENGHAMBAT PEKERJAAN</div>-->
+                <table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+							<th colspan="7" class="text-center" style="width:100%; border: solid 1px #000;">F.CUACA/BENCANA ALAM/KEJADIAN PENGHAMBAT PEKERJAAN</th>
+							<tr>
+								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>
+								<th class="text-center" style="width:35%; border: solid 1px #000;">Jenis</th>
+								<th class="text-center" style="width:10%; border: solid 1px #000;">Jam Mulai</th>
+								<th class="text-center" style="width:10%; border: solid 1px #000;">Jam Selesai</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Durasi</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Lokasi</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Akibat</th>
+							</tr>
+					   </thead>
+					   <tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t t-foreach="o.penghambat_pekerjaan_ids" t-as="l">
+									<tr>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-esc="l_index + 1"/>
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<span t-field="l.categ_weather_id.name"/>
+										</td>
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.start_time_jam"/>-->
+<!--										</td>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.end_time_jam"/>-->
+<!--										</td>-->
+										<td class="text-left" style="border: solid 1px #000;">
+											<t t-esc="'%02d:%02d' % (int(l.start), l.start % 1 * 60)" />
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<t t-esc="'%02d:%02d' % (int(l.end), l.end % 1 * 60)" />
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.duration"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.lokasi"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.akibat"/>
+										</td>
+									</tr>
+								</t>
+						</tbody>
+                  		<tr t-if="len(o.penghambat_pekerjaan_ids)== 0" >
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+						</tr>
+						<tr class="text-right">
+                                    <td colspan="6" class="text-right" style="border: solid 1px #000;">
+                                        <strong>Total Durasi : </strong>
+										<td class="text-center" style="border: solid 1px #000; font-weight: bold;">
+										<span t-field="o.total_durasi"/>
+										</td>
+                                    </td>
+                        </tr>
+					</table>
+					</div>
+				   <div style="page-break-inside: avoid;">
+<!--				<div style="font-weight: bold;">G.CUACA/BENCANA ALAM/KEJADIAN PENGHAMBAT PEKERJAAN</div>-->
+                <table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+							<th colspan="4" class="text-center" style="width:100%; border: solid 1px #000;">G.USUL/PENGAJUAN/SARAN/INSTRUKSI KESEPAKATAN/LAPORAN</th>
+							<tr>
+								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Poin Catatan</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Uraian</th>
+								<th class="text-center" style="width:15%; border: solid 1px #000;">Tanda Tangan Dan Nama Jelas</th>
+							</tr>
+					   </thead>
+					   <tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t t-foreach="o.laporan_ids" t-as="l">
+									<tr>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-esc="l_index + 1"/>
+										</td>
+										<td class="text-left" style="border: solid 1px #000;">
+											<span t-field="l.point_catatan"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<span t-field="l.uraian"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000;">
+											<div class="center">
+												<img t-attf-src="data:image/*;base64,{{l.ttd_nama}}" style="height: 30px; width: 40px;"/>
+								 			</div>
+                            			</td>
+									</tr>
+								</t>
+						</tbody>
+                  		<tr t-if="len(o.laporan_ids)== 0" >
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+							<td style="border: solid 1px #000;">&#160;</td>
+						</tr>
+					</table>
+					</div>
+				   <div style="page-break-inside: avoid;" >
+					<div class="text-center" style="font-weight: bold;">TANDA TANGAN</div>
+					<table class="table table-condensed" style="font-size:12px;" width="100%">
+						<thead>
+							<tr>
+								<th class="text-center" style="width:50%; border: solid 1px #000;">Project Manager</th>
+								<th class="text-center" style="width:50%; border: solid 1px #000;">Site Manager</th>
+							</tr>
+					   </thead>
+						<tbody class="sale_tbody">
+								<!-- Lines associated -->
+								<t>
+									<tr>
+										<td class="text-center" style="border: solid 1px #000; height:200px; vertical-align: bottom;">
+											<div class="center">
+											<img t-attf-src="data:image/*;base64,{{o.lampiran_ttd_pm}}" style="height: 30%; width: 30%;" align="midlle"/>
+											</div>
+											<br/>
+											<span t-field="o.project_id.user_id.name"/>
+										</td>
+										<td class="text-center" style="border: solid 1px #000; height:200px; vertical-align: bottom;">
+											<div class="center" >
+											<img t-attf-src="data:image/*;base64,{{o.lampiran_ttd_sm}}" style="height: 30%; width: 30%;" align="midlle"/>
+											</div>
+											<br/>
+											<span t-field="o.site_manager.name"/>
+										</td>
+									</tr>
+								</t>
+						</tbody>
+
+					</table>
+				</div>
+<!--				<div style="page-break-inside: avoid;">-->
+<!--                <t t-foreach="o.project_lines_layouted()" t-as="page">-->
+<!--                	<div style="font-weight: bold;">A. MANPOWER</div>-->
+<!--					<table class="table table-condensed" style="font-size:12px;" width="100%">-->
+<!--						<thead>-->
+<!--							<tr>-->
+<!--								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>-->
+<!--								<th class="text-center" style="width:35%; border: solid 1px #000;">Designation</th>-->
+<!--								<th class="text-center" style="width:50%; border: solid 1px #000;">Name</th>-->
+<!--								<th class="text-center" style="width:10%; border: solid 1px #000;">Person</th>-->
+<!--							</tr>-->
+<!--					   </thead>-->
+<!--					   <tbody class="sale_tbody">-->
+<!--							<t t-foreach="page" t-as="layout_category">-->
+
+<!--								<t t-if="layout_category_size &gt; 1 or page_size &gt; 1">-->
+<!--									<tr class="active">-->
+<!--										<td colspan="7" style="font-weight: bold; border: solid 1px #000;">&amp;bull;-->
+<!--											<t t-esc="layout_category['name']"/>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</t>-->
+<!--								-->
+<!--								&lt;!&ndash; Lines associated &ndash;&gt;-->
+<!--								<t t-foreach="layout_category['lines']" t-as="l">-->
+<!--									<tr>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-esc="l_index + 1"/>-->
+<!--										</td>-->
+<!--										<td class="text-left" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.designation_id"/>-->
+<!--										</td>-->
+<!--										<td class="text-left" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.partner_id.name"/>-->
+<!--										</td>-->
+<!--										<td class="text-right" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.person"/>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</t>-->
+<!--							</t>-->
+<!--						</tbody>-->
+<!--						<tr><td style="border-left:solid 1px #000; border-bottom:solid 1px #000;"></td>-->
+<!--						<td style="border-bottom:solid 1px #000;"></td>-->
+<!--						<td class="text-center" style="border-bottom:solid 1px #000; font-weight: bold;">Total Person</td><td class="text-right" style="border: solid 1px #000; font-weight: bold;">-->
+<!--						<span t-field="o.total_person"/>-->
+<!--						</td></tr>-->
+<!--					</table>-->
+
+<!--				</t>-->
+<!--				   </div>-->
+<!--				<div style="page-break-inside: avoid;">-->
+<!--				<div style="font-weight: bold;">B. MATERIAL/EQUIPMENT</div>-->
+<!--                <table class="table table-condensed" style="font-size:12px;" width="100%">-->
+<!--						<thead>-->
+<!--							<tr>-->
+<!--								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>-->
+<!--								<th class="text-center" style="width:45%; border: solid 1px #000;">Description</th>-->
+<!--								<th class="text-center" style="width:30%; border: solid 1px #000;">Quantity</th>-->
+<!--								<th class="text-center" style="width:20%; border: solid 1px #000;">Unit</th>-->
+<!--							</tr>-->
+<!--					   </thead>-->
+<!--					   <tbody class="sale_tbody">-->
+<!--								&lt;!&ndash; Lines associated &ndash;&gt;-->
+<!--								<t t-foreach="o.material_ids" t-as="l">-->
+<!--									<tr>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-esc="l_index + 1"/>-->
+<!--										</td>-->
+<!--										<td class="text-left" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.product_id"/>-->
+<!--										</td>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.product_uom"/>-->
+<!--										</td>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.qty"/>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</t>-->
+<!--						</tbody>-->
+<!--                  		<tr t-if="len(o.material_ids)== 0" >-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--						</tr>-->
+<!--					</table>-->
+<!--					</div>-->
+<!--					<div>-->
+<!--					<div style="page-break-inside: avoid;">-->
+<!--					<t t-foreach="o.project_weather_layouted()" t-as="page">-->
+<!--					<div style="font-weight: bold;">C. WEATHER REPORT</div>-->
+<!--					<table class="table table-condensed" style="font-size:12px;" width="100%">-->
+<!--						<thead>-->
+<!--							<tr>-->
+<!--								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>-->
+<!--								<th class="text-center" style="width:30%; border: solid 1px #000;">Start Time</th>-->
+<!--								<th class="text-center" style="width:30%; border: solid 1px #000;">End Time</th>-->
+<!--								<th class="text-center" style="width:35%; border: solid 1px #000;">Duration</th>-->
+<!--								-->
+<!--							</tr>-->
+<!--					   </thead>-->
+<!--					   <tbody class="sale_tbody">-->
+<!--								&lt;!&ndash; Lines associated &ndash;&gt;-->
+<!--								<t t-foreach="page" t-as="layout_category">-->
+
+<!--								<t t-if="layout_category_size &gt;= 1 or page_size &gt;= 1">-->
+<!--									<tr class="active">-->
+<!--										<td colspan="7" style="font-weight: bold; border: solid 1px #000;">&amp;bull;-->
+<!--											<t t-esc="layout_category['name']"/>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</t>-->
+<!--								-->
+<!--								&lt;!&ndash; Lines associated &ndash;&gt;-->
+<!--								<t t-foreach="layout_category['lines']" t-as="l">-->
+<!--									<tr>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-esc="l_index + 1"/>-->
+<!--										</td>-->
+<!--										<td class="text-left" style="border: solid 1px #000;">-->
+<!--											<t t-esc="'%02d:%02d' % (int(l.start), l.start % 1 * 60)" />-->
+<!--										</td>-->
+<!--										<td class="text-left" style="border: solid 1px #000;">-->
+<!--											<t t-esc="'%02d:%02d' % (int(l.end), l.end % 1 * 60)" />-->
+<!--										</td>-->
+<!--										<td class="text-right" style="border: solid 1px #000;">-->
+<!--											<t t-esc="'%02d:%02d' % (int(l.duration), l.duration % 1 * 60)" />-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</t>-->
+<!--								<tr class="text-right">-->
+<!--                                    <td colspan="5" class="text-right" style="border: solid 1px #000;">-->
+<!--                                        <strong>Subtotal Duration : </strong>-->
+<!--                                        <t t-set="subtotal" t-value="sum(line.duration for line in layout_category['lines'])"/>-->
+<!--                                        <t t-esc="'%02d:%02d' % (int(subtotal), subtotal % 1 * 60)" />-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--							</t>-->
+<!--							-->
+<!--						</tbody>-->
+<!--						<tr><td style="border-left:solid 1px #000; border-bottom:solid 1px #000;"></td>-->
+<!--						<td style="border-bottom:solid 1px #000;"></td>-->
+<!--						<td class="text-center" style="border-bottom:solid 1px #000; font-weight: bold;">Total Duration</td><td class="text-right" style="border: solid 1px #000; font-weight: bold;">-->
+<!--						<t t-esc="'%02d:%02d' % (int(o.total_durasi), o.total_durasi % 1 * 60)"/></td></tr>                               																	-->
+<!--					</table>-->
+<!--				  </t>-->
+<!--				</div>-->
+<!--				<div style="page-break-inside: avoid;">-->
+<!--					<div style="font-weight: bold;">D. ACTIVITY</div>-->
+<!--					<table class="table table-condensed" style="font-size:12px;" width="100%">-->
+<!--						<thead>-->
+<!--							<tr>-->
+<!--								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>-->
+<!--								<th class="text-center" style="width:50%; border: solid 1px #000;">Description</th>-->
+<!--								<th class="text-center" style="width:15%; border: solid 1px #000;">Plan</th>-->
+<!--								<th class="text-center" style="width:15%; border: solid 1px #000;">Actual</th>-->
+<!--								<th class="text-center" style="width:15%; border: solid 1px #000;">Deviasi</th>-->
+<!--							</tr>-->
+<!--					   </thead>-->
+<!--					   <tbody class="sale_tbody">-->
+<!--								&lt;!&ndash; Lines associated &ndash;&gt;-->
+<!--								<t t-foreach="o.activies_ids" t-as="l">-->
+<!--									<tr>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-esc="l_index + 1"/>-->
+<!--										</td>-->
+<!--										<td class="text-left" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.task_id"/>-->
+<!--										</td>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.plan"/>&#160;%-->
+<!--										</td>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.actual"/>&#160;%-->
+<!--										</td>-->
+<!--										<td class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-field="l.deviasi"/>&#160;%-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--								</t>-->
+<!--						</tbody>-->
+<!--                       <tr t-if="len(o.activies_ids)== 0" >-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--						</tr>-->
+<!--					</table>-->
+<!--				</div>-->
+<!--				</div>-->
+<!--				<div style="page-break-inside: avoid;" >-->
+<!--					<div style="font-weight: bold;">E. PROBLEMS</div>-->
+<!--					<table class="table table-condensed" style="font-size:12px;" width="100%">-->
+<!--						<thead>-->
+<!--							<tr>-->
+<!--								<th class="text-center" style="width:5%; border: solid 1px #000;">No</th>-->
+<!--								<th class="text-center" style="width:35%; border: solid 1px #000;">Problems</th>-->
+<!--								<th class="text-center" style="width:60%; border: solid 1px #000;">Solutions</th>-->
+<!--								-->
+<!--							</tr>-->
+<!--					   </thead>-->
+<!--					   <tbody class="sale_tbody">-->
+<!--								&lt;!&ndash; Lines associated &ndash;&gt;-->
+<!--								<t t-foreach="o.issue_ids" t-as="l">-->
+<!--									<tr>-->
+<!--										<td t-if="l.check == False" class="text-center" style="border: solid 1px #000;">-->
+<!--											<span t-if="l.check == False" t-esc="l_index + 1"/>-->
+<!--										</td>-->
+<!--										<td t-if="l.check == False" class="text-left" style="border: solid 1px #000;">-->
+<!--											<span t-if="l.check == False" t-field="l.name"/>-->
+<!--										</td>-->
+<!--										<td t-if="l.check == False" class="text-left" style="border: solid 1px #000;">-->
+<!--											<span t-if="l.check == False" t-field="l.solution"/>-->
+<!--										</td>-->
+<!--										-->
+<!--									</tr>-->
+<!--								</t>-->
+<!--						</tbody>-->
+<!--                        <tr t-if="len(o.issue_ids)== 0" >-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--							<td style="border: solid 1px #000;">&#160;</td>-->
+<!--						</tr>-->
+<!--					</table>-->
+<!--				</div>-->
+<!--   			    <div style="page-break-inside: avoid;" >-->
+<!--					<div style="font-weight: bold;">F. NOTES</div>-->
+<!--					<table class="table table-condensed" style="font-size:12px;" width="100%">-->
+<!--						<thead>-->
+<!--							<tr>-->
+<!--								<th class="text-center" style="width:5%; border: solid 1px #000;">Notes</th>-->
+<!--							</tr>-->
+<!--					   </thead>-->
+<!--					   <tbody class="sale_tbody">-->
+<!--									<tr>-->
+<!--										<td class="text-left" style="border: solid 1px #000;">-->
+<!--											<span t-field="o.notes"/>-->
+<!--										</td>-->
+<!--									</tr>-->
+<!--									<tr t-if="o.notes == False" >-->
+<!--										<td style="border: solid 1px #000;">&#160;</td>-->
+<!--									</tr>-->
+<!--						</tbody>-->
+<!--					</table>-->
+<!--				</div>          -->
+		</table>
+<!--         	   -->
+         </div>
+
+                <!-- Report Photo Activities -->
+              <p style="page-break-before:always;">
+                <h3 class="text-center">
+                        ACTIVITY PHOTOS REPORT (<span t-field="o.name"/>)<span t-if="o.state in ['draft']"> - Draft</span>
+                    </h3>
+
+
+				<table width="100%">
+                 	<td class="text-left">
+                    <table>
+                        <tr><td>No Urut</td><td> : </td><td><span t-field="o.no_urut"/></td></tr>
+						<tr><td>Hari/Tanggal</td><td> : </td><td><span t-field="o.date_daily"/></td></tr>
+                        <tr><td>Project Name</td><td> : </td><td><span t-field="o.project_id.name"/></td></tr>
+						<tr><td>Penyedia Jasa</td><td> : </td><td><span t-field="o.partner_id.name"/></td></tr>
+						<tr><td>Konsultan Pengawas</td><td> : </td><td><span t-field="o.company_id.name"/></td></tr>
+                        <tr><td>Kontrak No. Tanggal</td><td> : </td><td><span t-field="o.kontrak_no_tgl"/></td></tr>
+						<tr><td>SMPK No./Tanggal</td><td> : </td><td><span t-field="o.smpk_no_tgl"/></td></tr>
+<!--                        <tr><td>Project Description</td><td> : </td><td><span t-field="o.description"/></td></tr>-->
+                    </table>
+                    </td>
+<!--                    <td class="text-left">-->
+<!--                    <table>-->
+<!--                    	<tr><td>Location</td><td> : </td><td><span t-field="o.location"/></td></tr>-->
+<!--                        <tr><td style="width:35%;">Company</td><td style="width:5%;"> : </td><td><span t-field="o.company_id.name"/></td></tr>-->
+<!--                    	<tr><td style="width:35%;">Project Manager</td><td style="width:5%;"> : </td><td><span t-field="o.project_id.user_id.name"/></td></tr>-->
+<!--                    	<tr><td style="width:35%;">Prepared by</td><td style="width:5%;"> : </td><td><span t-field="o.write_uid.name"/></td></tr>-->
+<!--                    	<tr><td style="width:35%;">Report Date</td><td style="width:5%;"> : </td><td><span t-field="o.date_daily"/></td></tr>-->
+<!--                    </table>-->
+<!--                    </td>-->
+                 </table>
+	                   
+                   <br/>
+                    
+                    
+            
+                  
+                  
+                   <table class="table-condensed table" >
+                        
+                        <thead>
+                            <tr>
+                                <td class="text-center" style=" border: 0px solid black;">Daily Report : <span t-field="o.name"/> (<span t-field="o.date_daily"/>) </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="o.galery_ids" t-as="l" style="page-break-inside: avoid;">
+                       
+                            	
+                                   <td style=" border: 0px solid black;" > 
+                                        <div class="container-fluid small">
+                                            <div class="row">
+
+                                           <img t-attf-src="data:image/*;base64,{{l.photo_id.image}}" style="height: 175px; width: 296px;"/> 
+                                            
+                                            <div class="col-5">
+                                                <strong><span t-field="l.photo_id.name"/><br/></strong>
+                                                    Task :&#160;<span t-field="l.photo_id.task_id.name"/><br/>
+                                                    Date :&#160;<span t-field="l.photo_id.picture_date"/><br/>
+                                                    Description : <br/>
+                                                    <span t-field="l.photo_id.descrip"/><br/>
+                                                    Progress Actual :&#160;<span t-if="l.actual != 0.0" t-field="l.actual"/>
+                                                    		  <span t-if="l.actual == 0.0">-</span>&#160;%<br/>
+                                            </div>
+                                            <!--<div class="col-xs-12"><span t-field="l.picture_date"/></div>-->
+                                            
+                                            </div>
+                                        </div>
+                                    </td>
+                            </tr>
+                       </tbody>
+
+                    </table>
+                    </p>
+
+
+
+					 <!-- Report Attachment Activities -->
+              <p style="page-break-before:always;">
+<!--                <h3 class="text-center">-->
+<!--                        LAMPIRAN DOKUMEN-->
+<!--                    </h3>-->
+				<table width="100%">
+					<table class="table-condensed table" >
+                 	    <tbody>
+                            <tr t-foreach="o.lampiran_dokumen_ids" t-as="l" style="page-break-inside: avoid;">
+								 <div class="pageBreak">
+										<img t-attf-src="data:image/*;base64,{{l.lampiran_dokumen}}" style="height: 100%; width: 100%;"/>
+								 </div>
+                            </tr>
+                       </tbody>
+					</table>
+			    </table>
+                    </p>
+				 </div>
+              
+                    </t>
+                </t>
+            </t>
+       
+        </template>
+    </data>
+</openerp>

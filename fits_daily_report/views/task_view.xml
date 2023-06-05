@@ -1,0 +1,102 @@
+<openerp>
+  <data>
+  <record id="view_task_inherit_mk_form" model="ir.ui.view">
+        <field name="name">task.form.view.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="fits_extend_mk.view_task_inherit_form"></field>
+        <field name="arch" type="xml">
+        	<header>
+               <button name="generate_progress"  string="Generate Progress(Plan) Line" type="object"
+                confirm="Tou are going to replace progress line.
+               This action is not undo-able. Do you want to continue ?" groups="project.group_project_manager"/>
+               <button name="recompute_bobot"  string="Recompute Weight"  attrs="{'invisible': [('is_cm', '=', False)]}" type="object"
+                 groups="project.group_project_manager"/>
+            </header>
+			<xpath expr="/form/sheet/group" position="inside">
+			<group string="Construction Management" groups="project.group_project_manager">
+				<field name="is_cm" groups="project.group_project_manager"/>
+				<field name="nilai_kegiatan" attrs="{'invisible': [('is_cm', '=', False)]}" groups="project.group_project_manager"/>
+        		<field name="bobot" attrs="{'invisible': [('is_cm', '=', False)]}" groups="project.group_project_manager"/>
+                <field name="bobot_actual" attrs="{'invisible': [('is_cm', '=', False)]}" groups="project.group_project_manager"/>
+
+			</group>
+			</xpath>
+			<field name="date_deadline" position="before">
+               <field name="date_start" required="1"/>
+               <field name="date_end" required="1"/>
+			</field>
+             <xpath expr="//notebook/page[@name='progress']" position="replace">
+                    <page string="Progress" attrs="{'invisible': [('project_id', '=', False)]}">
+                    <field name="progres_ids">
+                        <tree editable="bottom" string="Progress" default_order="date">
+                            <field name="date"/>
+                            <field name="project_id"/>
+                            <field name="plan" sum="Plan"/>
+                            <field name="plan_b" sum="Plan B"/>
+                            <field name="progres" sum="Actual"/>
+                            <field name="bobot_plan_line" sum="Bobot Plan"/>
+                            <field name="bobot_plan_b_line" sum="Bobot Plan B"/>
+                            <field name="bobot_actual_line" sum="Bobot Actual"/>
+                        </tree>
+                    </field>
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="progres_total">
+                                <field name="total_actual" invisible="1"/>
+                                <field name="total_progres" invisible="1"/>
+                                <field name="actual_today" />
+                                <field name="plan_today"/>
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="deviasi" />
+                                </div>
+                                <field name="deviasi" nolabel="1" class="oe_subtotal_footer_separator" />
+                            </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+     <record id="view_task_inherit_search_form" model="ir.ui.view">
+        <field name="name">task.form.search.view.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+          		<filter string="Construction Management Items" name="is_cm" domain="[('is_cm', '=', True)]"/>
+            </xpath>
+
+        </field>
+    </record>
+
+
+	<record id="view_task_inherit_mk_tree" model="ir.ui.view">
+        <field name="name">task.tree.view.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="fits_extend_mk.view_task_inherit_tree"></field>
+        <field name="arch" type="xml">
+             <field name="stage_id" position="after">
+               <field name="nilai_kegiatan" sum="Total Nilai" groups="project.group_project_manager"/>
+               <field name="bobot" sum="Total Bobot" groups="project.group_project_manager"/>
+               <field name="bobot_actual" sum="Total Actual" groups="project.group_project_manager"/>
+               <field name="total_progres"  invisible="1"/>
+               <field name="plan_today"/>
+               <field name="actual_today"/>
+			</field>
+        </field>
+    </record>
+
+    <record id="view_task_tree_mk_inherit" model="ir.ui.view">
+        <field name="name">task.tree.inherit.view</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="hr_timesheet.view_task_tree2_inherited"></field>
+        <field name="arch" type="xml">
+			<field name="stage_id" position="after">
+               <field name="total_actual" string="Progress (%)" widget="progressbar"/>
+               <field name="is_cm" invisible="1"/>
+                <button name="recompute_bobot"  string="Recompute Weight" type="object" class="oe_highlight"
+                 attrs="{'invisible': [('is_cm', '=', False)]}" groups="project.group_project_manager"/>
+			</field>
+        </field>
+    </record>
+
+
+  </data>
+</openerp>

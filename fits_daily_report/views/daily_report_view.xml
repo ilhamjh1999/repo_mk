@@ -1,0 +1,276 @@
+<odoo>
+  <data>
+  	
+   	<record id="view_daily_form" model="ir.ui.view">
+            <field name="name">project.daily.form</field>
+            <field name="model">project.daily</field>
+            <field name="arch" type="xml">
+                <form string="Daily Report">
+	                <header>
+	                    <button name="action_sent" states="validate" string="Send by Email Activity Photos" type="object" groups="project.group_project_manager" />
+	                    <button name="action_sent" states="sent" string="Resend Email Activity Photos" type="object" groups="project.group_project_manager"/>
+	                    <button name="action_sent_const" states="validate" string="Send by Email Daily Report" type="object" groups="project.group_project_manager" />
+	                    <button name="action_sent_const" states="sent" string="Resend Email Daily Report" type="object" groups="project.group_project_manager"/>
+	                    <button name="action_valid" states="draft" type="object" string="Validate"/>
+	                    <field name="state" widget="statusbar" statusbar_visible="draft,validate,sent"/>
+	                </header>
+	                    <sheet>
+	                    <group>
+	                        <group>
+	                            <field name="no_urut"/>
+	                            <field name="project_id"/>
+	                            <field name="name"/>
+	                            <field name="date_daily"/>
+	                            <label for="date_from" string="Jam Kerja"/>
+	                            <div>
+	                            <field name="start_time_jam" class="oe_inline"/> : <field name="start_time_menit" class="oe_inline"/> -
+	                            <field name="end_time_jam" class="oe_inline"/> : <field name="end_time_menit" class="oe_inline"/>
+	                            </div>
+	                            <field name="user_id"/>
+								<field name="lampiran_ttd_pm" widget="image" filename="filename_ttd_pm"/>
+								<field name="filename_ttd_pm" invisible="1"/>
+								<field name="site_manager"/>
+								<field name="lampiran_ttd_sm" widget="image" filename="filename_ttd_sm"/>
+								<field name="filename_ttd_sm" invisible="1"/>
+	                        </group>
+	                        <group>
+	                        	<field name="partner_id"/>
+	                            <field name="location"/>
+	                            <field name="company_id"/>
+                                <field name="kontrak_no_tgl"/>
+                                <field name="smpk_no_tgl"/>
+	                            <field name="description"/>
+								<field name="personil_pelaksana_1"/>
+								<field name="personil_pelaksana_2"/>
+	                        </group>
+	                    </group>
+	                    <notebook>
+                         <page string="A.PEKERJAAN">
+	                            <field name="pekerjaan_ids" nolabel="1"  >
+	                                <tree string="Pekerjaan" editable="bottom">
+	                                	<field name="sequence" widget="handle"/>
+	                                    <field name="task_id" />
+	        			                <field name="plan"/>
+        			                	<field name="actual"/>
+										<field name="total_progress"/>
+										<field name="kegiatan_hari_ini"/>
+	                              </tree>
+	                          </field>
+					    	</page>
+							<page string="B.TIBA/MUTASI: BAHAN KONSTRUKSI POKOK">
+	                            <field name="bahan_konstruksi_ids" nolabel="1"  >
+	                                <tree string="Bahan Konstruksi" editable="bottom">
+	                                	<field name="sequence" widget="handle"/>
+	                                    <field name="product_id" />
+	        			                <field name="vol"/>
+        			                	<field name="product_uom"/>
+										<field name="lokasi_asal"/>
+										<field name="lokasi_tujuan"/>
+							      </tree>
+	                          </field>
+					    	</page>
+							<page string="C.PEMAKAIAN PERALATAN">
+	                            <field name="pemakaian_peralatan_ids" nolabel="1"  >
+	                                <tree string="Pemakaian Peralatan" editable="bottom">
+	                                	<field name="sequence" widget="handle"/>
+	                                    <field name="product_id" />
+	        			                <field name="qty"/>
+        			                	<field name="lokasi"/>
+							      </tree>
+	                          </field>
+					    	</page>
+							<page string="D.PERSONIL PELAKSANAAN LAPANGAN 1">
+	                            <field name="personil_pelaksanaan_ids" nolabel="1"  >
+	                                <tree string="Personil Pelaksanaan 1" editable="bottom">
+	                                	<field name="sequence" widget="handle"/>
+	                                    <field name="designation_id" />
+	        			                <field name="partner_id"/>
+        			                	<field name="person"/>
+										<field name="lokasi"/>
+							      </tree>
+	                          </field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="grand_total">
+                                	<div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_person"  />
+                                	</div>
+                                	<field name="total_person" nolabel="1" class="oe_subtotal_footer_separator" />
+                            	</group>
+					    	</page>
+							<page string="E.PERSONIL PELAKSANAAN LAPANGAN 2">
+	                            <field name="personil_pelaksanaan_tma_ids" nolabel="1"  >
+	                                <tree string="Personil Pelaksanaan 1" editable="bottom">
+	                                	<field name="sequence" widget="handle"/>
+	                                    <field name="designation_id" />
+	        			                <field name="partner_id"/>
+        			                	<field name="person"/>
+										<field name="lokasi"/>
+							      </tree>
+	                          </field>
+								<group class="oe_subtotal_footer oe_right" colspan="2" name="grand_total_tma">
+                                	<div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_person_tma"  />
+                                	</div>
+                                	<field name="total_person_tma" nolabel="1" class="oe_subtotal_footer_separator" />
+                            	</group>
+					    	</page>
+							<page string="F.CUACA/BENCANA ALAM/KEJADIAN PENGHAMBAT PEKERJAAN">
+                            <field name="penghambat_pekerjaan_ids" nolabel="1">
+                                <form string="Penghambat Pekerjaan">
+				                <group>
+									<field name="categ_weather_id"/>
+				                	 <label for="start_time_jam" string="Jam Mulai"/>
+                        			 <div>
+                                     <field name="start_time_jam" class="oe_inline"/> : <field name="start_time_menit" class="oe_inline"/>
+                                     </div>
+                                     <label for="end_time_jam" string="Jam Selesai"/>
+                        			 <div>
+                                     <field name="end_time_jam" class="oe_inline"/> : <field name="end_time_menit" class="oe_inline"/>
+                                     </div>
+				        			<field name="duration" widget="float_time"/>
+				        			<field name="lokasi"/>
+									<field name="akibat"/>
+									<field name="start" widget="float_time" invisible="1" />
+				        			<field name="end" widget="float_time" invisible="1"/>
+				        			<field name="project_id" invisible="1"/>
+				        			<field name="date" invisible="1"/>
+
+								</group>
+
+				        		</form>
+                                <tree string="Penghambat Pekerjaan">
+                                   <field name="sequence" widget="handle"/>
+                                   <field name="date" invisible="1"/>
+								   <field name="categ_weather_id"/>
+								   <field name="start" widget="float_time"/>
+				        		   <field name="end" widget="float_time"/>
+				        		   <field name="duration" widget="float_time"/>
+								   <field name="lokasi"/>
+								   <field name="akibat"/>
+                              </tree>
+                          </field>
+                          <group class="oe_subtotal_footer oe_right" colspan="2" name="grand_total">
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="total_durasi"  />
+                                </div>
+                                <field name="total_durasi" widget="float_time" nolabel="1" class="oe_subtotal_footer_separator" />
+                            </group>
+                        </page>
+							<page string="G.USUL/PENGAJUAN/SARAN/INSTRUKSI KESEPAKATAN/LAPORAN">
+	                            <field name="laporan_ids" nolabel="1"  >
+	                                <tree string="Laporan" editable="bottom">
+	                                	<field name="point_catatan"/>
+	        			                <field name="uraian"/>
+        			                	<field name="ttd_nama" widget="binary" filename="filename_ttd"/>
+										<field name="filename_ttd" invisible="1"/>
+							      </tree>
+	                          </field>
+					    	</page>
+	                        <page string="DOKUMENTASI KEGIATAN">
+	                            <field name="galery_ids" nolabel="1"  >
+	                                <tree string="Galery" editable="bottom">
+	                                	<field name="sequence" widget="handle"/>
+	                                    <field name="photo_id" domain="[('project_id', '=', parent.project_id)]"
+	                                                context="{'default_project_id': parent.project_id}"/>
+	        							<field name="descrip"/>
+	        							<field name="date"/>
+	        							<field name="project_id" />
+	        			                <field name="task_id" />
+	        			                <field name="plan" invisible="1"/>
+        			                	<field name="actual"/>
+	                              </tree>
+	                          </field>
+                        	</page>
+							<page string="LAMPIRAN DOKUMEN">
+	                            <field name="lampiran_dokumen_ids" nolabel="1"  >
+	                                <tree string="Lampiran Dokumen" editable="bottom">
+	                                	<field name="lampiran_dokumen" widget="binary" filename="nama_lampiran"/>
+										<field name="nama_lampiran" invisible="1"/>
+	        							<field name="descrip"/>
+	        							<field name="date"/>
+	        				      </tree>
+	                          </field>
+                        	</page>
+	                    </notebook>
+	                </sheet>
+	                <div class="oe_chatter">
+		                <field name="message_follower_ids" widget="mail_followers"/>
+		                <field name="message_ids" widget="mail_thread"/>
+		            </div>
+               </form>
+            </field>
+        </record>
+  	
+  		<record id="view_daily_tree" model="ir.ui.view">
+            <field name="name">project.daily.tree</field>
+            <field name="model">project.daily</field>
+            <field name="arch" type="xml">
+                <tree string="Daily Report">
+                	<field name="name"/>
+	                <field name="project_id"/>
+	                <field name="date_daily"/>
+	                <field name="partner_id"/>    
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_daily_search_form" model="ir.ui.view">
+            <field name="name">project.daily.search.form</field>
+            <field name="model">project.daily</field>
+            <field name="arch" type="xml">
+               <search string="Daily Report">
+                    <field name="project_id"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Project" name="project" context="{'group_by':'project_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_daily">
+	    	<field name="name">Daily Report</field>
+	    	<field name="res_model">project.daily</field>
+	    	<field name="view_type">form</field>
+	    	<field name="view_mode">tree,form</field>
+	    	<field name="context">{'search_default_project': 1}</field>
+		</record>
+		
+		<menuitem id="menu_management_construction" name="Management Construction"
+            parent="project.menu_main_pm" sequence="98"/>   
+		
+		<menuitem id="menu_project_daily_report"
+            name="Daily Report"
+            action="action_daily"
+            parent="menu_management_construction"
+            sequence="1"/> 
+            	
+         <record model="ir.ui.view" id="project_designation_form_view">
+            <field name="name">Designation</field>
+            <field name="model">project.designation</field>
+            <field name="arch" type="xml">
+                <form string="Designation">
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record id="project_designation_action" model="ir.actions.act_window">
+            <field name="name">Designation</field>
+            <field name="res_model">project.designation</field>
+            <field name="view_type">form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a new Designation.
+              </p>
+            </field>
+        </record>
+
+                  	
+        <menuitem id="menu_project_designation"
+            name="Designation"
+            action="project_designation_action"
+            parent="menu_management_construction"
+            sequence="3"/> 
+  	
+  </data>
+</odoo>
